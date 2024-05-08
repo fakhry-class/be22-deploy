@@ -3,6 +3,7 @@ package main
 import (
 	"be22/clean-arch/app/configs"
 	"be22/clean-arch/app/databases"
+	"be22/clean-arch/app/migrations"
 	"be22/clean-arch/app/routers"
 
 	"github.com/labstack/echo/v4"
@@ -13,6 +14,8 @@ func main() {
 	cfg := configs.InitConfig()
 	dbMysql := databases.InitDBMysql(cfg)
 	// dbPosgres := databases.InitDBPosgres(cfg)
+
+	migrations.InitDBMigration(dbMysql)
 
 	// create new instance echo
 	e := echo.New()
