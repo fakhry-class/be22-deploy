@@ -5,17 +5,21 @@ import (
 	"be22/clean-arch/features/user"
 	"be22/clean-arch/utils/encrypts"
 	"errors"
+
+	"github.com/go-playground/validator/v10"
 )
 
 type userService struct {
 	userData    user.DataInterface
 	hashService encrypts.HashInterface
+	validate    *validator.Validate
 }
 
 func New(ud user.DataInterface, hash encrypts.HashInterface) user.ServiceInterface {
 	return &userService{
 		userData:    ud,
 		hashService: hash,
+		validate:    validator.New(),
 	}
 
 }
@@ -23,8 +27,12 @@ func New(ud user.DataInterface, hash encrypts.HashInterface) user.ServiceInterfa
 // Create implements user.ServiceInterface.
 func (u *userService) Create(input user.Core) error {
 	// validasi /logic
-	if input.Name == "" || input.Email == "" || input.Password == "" {
-		return errors.New("[validation] nama/email/password tidak boleh kosong")
+	// if input.Name == "" || input.Email == "" || input.Password == "" {
+	// 	return errors.New("[validation] nama/email/password tidak boleh kosong")
+	// }
+	errValidate := u.validate.Struct(input)
+	if errValidate != nil {
+		return errors.New("[validation] " + errValidate.Error())
 	}
 
 	if input.Password != "" {
