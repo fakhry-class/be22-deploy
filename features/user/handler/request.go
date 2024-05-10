@@ -1,5 +1,7 @@
 package handler
 
+import "be22/clean-arch/features/user"
+
 type UserRequest struct {
 	Name      string `json:"name" form:"name"`
 	Email     string `json:"email" form:"email"`
@@ -12,4 +14,15 @@ type UserRequest struct {
 type LoginRequest struct {
 	Email    string `json:"email" form:"email"`
 	Password string `json:"password" form:"password"`
+}
+
+func RequestToCore(input UserRequest) user.Core {
+	return user.Core{
+		Name:      input.Name,
+		Email:     input.Email,
+		Password:  input.Password,
+		Phone:     input.Phone,
+		Address:   input.Address,
+		StoreName: input.StoreName,
+	}
 }

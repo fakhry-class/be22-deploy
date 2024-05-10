@@ -18,16 +18,16 @@ func New(db *gorm.DB) user.DataInterface {
 
 // Insert implements user.DataInterface.
 func (u *userQuery) Insert(input user.Core) error {
-	var userGorm User
+	var userGorm User = CoreToModel(input)
 
-	userGorm = User{
-		Name:      input.Name,
-		Email:     input.Email,
-		Password:  input.Password,
-		Phone:     input.Phone,
-		Address:   input.Address,
-		StoreName: input.StoreName,
-	}
+	// userGorm = User{
+	// 	Name:      input.Name,
+	// 	Email:     input.Email,
+	// 	Password:  input.Password,
+	// 	Phone:     input.Phone,
+	// 	Address:   input.Address,
+	// 	StoreName: input.StoreName,
+	// }
 	tx := u.db.Create(&userGorm)
 
 	if tx.Error != nil {
@@ -45,20 +45,22 @@ func (u *userQuery) SelectAll() ([]user.Core, error) {
 		return nil, tx.Error
 	}
 	//mapping
-	var allUserCore []user.Core
-	for _, v := range allUsers {
-		allUserCore = append(allUserCore, user.Core{
-			ID:        v.ID,
-			Name:      v.Name,
-			Email:     v.Email,
-			Password:  v.Password,
-			Phone:     v.Phone,
-			Address:   v.Address,
-			StoreName: v.StoreName,
-			CreatedAt: v.CreatedAt,
-			UpdatedAt: v.UpdatedAt,
-		})
-	}
+	var allUserCore = ListModelToCore(allUsers)
+	// var allUserCore []user.Core
+	// for _, v := range allUsers {
+	// 	allUserCore = append(allUserCore, user.Core{
+	// 		ID:        v.ID,
+	// 		Name:      v.Name,
+	// 		Email:     v.Email,
+	// 		Password:  v.Password,
+	// 		Phone:     v.Phone,
+	// 		Address:   v.Address,
+	// 		StoreName: v.StoreName,
+	// 		Role:      v.Role,
+	// 		CreatedAt: v.CreatedAt,
+	// 		UpdatedAt: v.UpdatedAt,
+	// 	})
+	// }
 
 	return allUserCore, nil
 }
@@ -84,17 +86,19 @@ func (u *userQuery) SelectByEmail(email string) (*user.Core, error) {
 		return nil, tx.Error
 	}
 	// mapping
-	var usercore = user.Core{
-		ID:        userData.ID,
-		Name:      userData.Name,
-		Email:     userData.Email,
-		Password:  userData.Password,
-		Phone:     userData.Phone,
-		Address:   userData.Address,
-		StoreName: userData.StoreName,
-		CreatedAt: userData.CreatedAt,
-		UpdatedAt: userData.UpdatedAt,
-	}
+	var usercore = userData.ModelToCore()
+	// var usercore = user.Core{
+	// 	ID:        userData.ID,
+	// 	Name:      userData.Name,
+	// 	Email:     userData.Email,
+	// 	Password:  userData.Password,
+	// 	Phone:     userData.Phone,
+	// 	Address:   userData.Address,
+	// 	StoreName: userData.StoreName,
+	// 	Role:      userData.Role,
+	// 	CreatedAt: userData.CreatedAt,
+	// 	UpdatedAt: userData.UpdatedAt,
+	// }
 
 	return &usercore, nil
 }
@@ -108,17 +112,19 @@ func (u *userQuery) SelectById(id uint) (*user.Core, error) {
 		return nil, tx.Error
 	}
 	// mapping
-	var usercore = user.Core{
-		ID:        userData.ID,
-		Name:      userData.Name,
-		Email:     userData.Email,
-		Password:  userData.Password,
-		Phone:     userData.Phone,
-		Address:   userData.Address,
-		StoreName: userData.StoreName,
-		CreatedAt: userData.CreatedAt,
-		UpdatedAt: userData.UpdatedAt,
-	}
+	var usercore = userData.ModelToCore()
+	// var usercore = user.Core{
+	// 	ID:        userData.ID,
+	// 	Name:      userData.Name,
+	// 	Email:     userData.Email,
+	// 	Password:  userData.Password,
+	// 	Phone:     userData.Phone,
+	// 	Address:   userData.Address,
+	// 	StoreName: userData.StoreName,
+	// 	Role:      userData.Role,
+	// 	CreatedAt: userData.CreatedAt,
+	// 	UpdatedAt: userData.UpdatedAt,
+	// }
 
 	return &usercore, nil
 }

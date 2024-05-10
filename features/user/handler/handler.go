@@ -34,14 +34,15 @@ func (uh *UserHandler) Register(c echo.Context) error {
 	}
 
 	// mapping  dari request ke core
-	inputCore := user.Core{
-		Name:      newUser.Name,
-		Email:     newUser.Email,
-		Password:  newUser.Password,
-		Phone:     newUser.Phone,
-		Address:   newUser.Address,
-		StoreName: newUser.StoreName,
-	}
+	inputCore := RequestToCore(newUser)
+	// inputCore := user.Core{
+	// 	Name:      newUser.Name,
+	// 	Email:     newUser.Email,
+	// 	Password:  newUser.Password,
+	// 	Phone:     newUser.Phone,
+	// 	Address:   newUser.Address,
+	// 	StoreName: newUser.StoreName,
+	// }
 	// memanggil/mengirimkan data ke method service layer
 	errInsert := uh.userService.Create(inputCore)
 	if errInsert != nil {
